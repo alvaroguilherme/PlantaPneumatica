@@ -17,7 +17,10 @@ class MainApp(App):
             'rpm':884,
             'torque':1420
         },
-        db_path = 'db\\banco.db')
+        control_addrs = {
+            'valv':712
+        },
+        db_path = 'db/banco.db')
         return self._widget
     
     def on_stop(self):

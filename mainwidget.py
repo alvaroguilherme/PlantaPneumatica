@@ -1,6 +1,6 @@
 from kivy.uix.boxlayout import BoxLayout
 from popups import ModbusPopup, ScanPopup, DataGraphPopup, HistGraphPopup, ValvControlPopup
-from pyModbusTCP.client import ModbusClient
+from pyModbusTCP.client import ModbusClient, WRITE_SINGLE_REGISTER
 from timeseriesgraph import TimeSeriesGraph
 from kivy.core.window import Window
 from threading import Thread
@@ -16,6 +16,7 @@ class MainWidget(BoxLayout):
     _updateThread = None
     _updateWidget = True
     _tags = {}
+    _tags_control = {}
     _max_points = 20
     _max_y = 5
     def __init__(self, scan_time, **kwargs):
@@ -23,6 +24,9 @@ class MainWidget(BoxLayout):
         self._meas = {}
         self._meas['timestamp'] = None
         self._meas['values'] = {}
+        self._meas_control = {}
+        self._meas_control['timestamp'] = None
+        self._meas_control['values'] = {}
         self._scan_time = scan_time
         self._serverIP = kwargs.get('server_ip')
         self._serverPort = kwargs.get('server_port')
@@ -35,6 +39,8 @@ class MainWidget(BoxLayout):
         self._graphPopup = DataGraphPopup(self._max_points,self._max_y,self._tags['pressao']['color'])
         self._histPopup = HistGraphPopup(tags=self._tags)
         self._db = BDHandler(kwargs.get('db_path'),self._tags)
+        for key2,addr2 in kwargs.get('control_addrs').items():
+            self._tags_control[key2] = {'addr':addr2}
         self._controlPopup = ValvControlPopup()
 
     def startDataRead(self, ip, port):
@@ -77,10 +83,56 @@ class MainWidget(BoxLayout):
 
     def readBit(self,addr):
         result = self._modbusClient.read_holding_registers(addr,1)
-        decoder  =BinaryPayloadDecoder.fromRegisters(result, Endian.Big)
+        decoder = BinaryPayloadDecoder.fromRegisters(result, Endian.Big)
         decoded = decoder.decode_16bit_int()
         result2 = [int(i) for i in list('{0:016b}'.format(decoded))]
         return result2
+
+    def readControl(self):
+        self._meas_control['timestamp'] = datetime.now()
+        for key,value in self._tags_control.items():
+            self._meas_control['values'][key] = self.readBit(value['addr'])
+        bits_valv = self._meas_control['values']['valv']
+        self.mudaCorValv(bits_valv)
+        # print('Válvulas')
+        # print(self._meas_control)
+
+    def mudaCorValv(self,bits_valv):
+        if bits_valv[-2] == 0:
+            self.ids.valv2.color = (0,1,0,1)
+        else:
+            self.ids.valv2.color = (1,0,0,1)
+        if bits_valv[-3] == 0:
+            self.ids.valv3.color = (0,1,0,1)
+        else:
+            self.ids.valv3.color = (1,0,0,1)
+        if bits_valv[-4] == 0:
+            self.ids.valv4.color = (0,1,0,1)
+        else:
+            self.ids.valv4.color = (1,0,0,1)
+        if bits_valv[-5] == 0:
+            self.ids.valv5.color = (0,1,0,1)
+        else:
+            self.ids.valv5.color = (1,0,0,1)
+        if bits_valv[-6] == 0:
+            self.ids.valv6.color = (0,1,0,1)
+        else:
+            self.ids.valv6.color = (1,0,0,1)
+    
+    def writeValv(self,addr,text_valv):
+        bits_valv = self._meas_control['values']['valv']
+        # print(id_valv)
+        num_valv = ((int(text_valv[-1])))*-1
+        # print('Abrir '+text_valv[-1])
+        if text_valv == ('Abrir '+text_valv[-1]):
+            bits_valv[num_valv] = 0
+        elif text_valv == ('Fechar '+text_valv[-1]):
+            bits_valv[num_valv] = 1
+        num16bits = int("".join(str(i) for i in bits_valv),2)
+        # print(num_valv)
+        # print(bits_valv)
+        # print(num16bits)
+        self._modbusClient.write_single_register(addr,num16bits)
 
     def updateGUI(self):
         """
@@ -103,6 +155,8 @@ class MainWidget(BoxLayout):
                 self.readData()
                 # atualizar interface
                 self.updateGUI()
+                # ler os dados de controle
+                self.readControl()
                 # inserir os dados no BD
                 self._db.insertData(self._meas)
                 sleep(self._scan_time/1000)
@@ -129,7 +183,7 @@ class MainWidget(BoxLayout):
             else:
                 cols.append('timestamp')
                 dados = self._db.selectData(cols,init_t,final_t)
-                print(dados)
+                # print(dados)
             if dados is None or len(dados['timestamp'])==0:
                 return
             

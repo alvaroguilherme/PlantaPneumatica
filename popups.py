@@ -44,9 +44,10 @@ class HistGraphPopup(Popup):
             cb.id = key
             self.ids.sensores.add_widget(cb)
 
-class LabeledCheckBoxControl(BoxLayout):
-    pass
+# class LabeledCheckBoxControl(BoxLayout):
+#     pass
 
 class ValvControlPopup(Popup):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    pass
+        
+            

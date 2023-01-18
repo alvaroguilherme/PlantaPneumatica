@@ -128,7 +128,7 @@
             y_grid: True
             xmin: 0
             ymin: 0
-            ymax: 60000
+            ymax: 20
         BoxLayout:
             id: sensores
             orientation:'horizontal'
@@ -166,7 +166,7 @@
     size_hint: (0.05,1)
     CheckBox:
         id: checkbox
-        on_active: None
+        on_active: app.root.getDataDB()
     Label:
         id: label
 
@@ -184,6 +184,16 @@
                 halign: 'center'
                 yalign: 'top'
                 markup: True
+            Button:
+                id: btn_abrir_2
+                text: 'Abrir 2'
+                on_release:
+                    app.root.writeValv(712,str(btn_abrir_2.text))
+            Button:
+                id: btn_fechar_2
+                text: 'Fechar 2'
+                on_release:
+                    app.root.writeValv(712,str(btn_fechar_2.text))
         BoxLayout:
             orientation:'vertical'
             size_hint: (0.2,1)
@@ -192,6 +202,16 @@
                 halign: 'center'
                 yalign: 'top'
                 markup: True
+            Button:
+                id: btn_abrir_3
+                text: 'Abrir 3'
+                on_release:
+                    app.root.writeValv(712,str(btn_abrir_3.text))
+            Button:
+                id: btn_fechar_3
+                text: 'Fechar 3'
+                on_release:
+                    app.root.writeValv(712,str(btn_fechar_3.text))
         BoxLayout:
             orientation:'vertical'
             size_hint: (0.2,1)
@@ -200,6 +220,16 @@
                 halign: 'center'
                 yalign: 'top'
                 markup: True
+            Button:
+                id: btn_abrir_4
+                text: 'Abrir 4'
+                on_release:
+                    app.root.writeValv(712,str(btn_abrir_4.text))
+            Button:
+                id: btn_fechar_4
+                text: 'Fechar 4'
+                on_release:
+                    app.root.writeValv(712,str(btn_fechar_4.text))
         BoxLayout:
             orientation:'vertical'
             size_hint: (0.2,1)
@@ -208,6 +238,16 @@
                 halign: 'center'
                 yalign: 'top'
                 markup: True
+            Button:
+                id: btn_abrir_5
+                text: 'Abrir 5'
+                on_release:
+                    app.root.writeValv(712,str(btn_abrir_5.text))
+            Button:
+                id: btn_fechar_5
+                text: 'Fechar 5'
+                on_release:
+                    app.root.writeValv(712,str(btn_fechar_5.text))
         BoxLayout:
             orientation:'vertical'
             size_hint: (0.2,1)
@@ -216,6 +256,16 @@
                 halign: 'center'
                 yalign: 'top'
                 markup: True
+            Button:
+                id: btn_abrir_6
+                text: 'Abrir 6'
+                on_release:
+                    app.root.writeValv(712,str(btn_abrir_6.text))
+            Button:
+                id: btn_fechar_6
+                text: 'Fechar 6'
+                on_release:
+                    app.root.writeValv(712,str(btn_fechar_6.text))
         Button:
             text:'Fechar'
             size_hint: (0.2,0.1)
