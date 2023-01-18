@@ -1,0 +1,231 @@
+#:kivy 2.2.0
+<ModbusPopup>:
+    title: 'Conectar ao servidor'
+    size_hint_y: None
+    size_hint_x: 0.4
+    height: 200
+    BoxLayout:
+        orientation:'vertical'
+        id: layout
+        GridLayout:
+            cols:2
+            rows:2
+            Label:
+                text:'IP'
+                font_size: 14
+            TextInput:
+                id: txt_ip
+                text:'192.168.0.14'
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+            Label:
+                text:'Porta'
+                font_size: 14
+            TextInput:
+                id: txt_port
+                text:'502'
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+        BoxLayout:
+            orientation:'horizontal'
+            Button:
+                size_hint_y: None
+                height: 40
+                text:'Conectar'
+                on_release: 
+                    root.clearInfo()
+                    app.root.startDataRead(txt_ip.text, int(txt_port.text))
+                    
+            Button:
+                size_hint_y: None
+                height: 40
+                text:'Fechar'
+                on_release:
+                    root.dismiss()
+                    root.clearInfo()
+
+<ScanPopup>:
+    title: 'Escolher Scan Time'
+    size_hint_y: None
+    size_hint_x: 0.4
+    height: 150
+    BoxLayout:
+        orientation:'vertical'
+        id: layout
+        GridLayout:
+            cols:2
+            rows:1
+            Label:
+                text:'ScanTime [ms]'
+                font_size: 14
+            TextInput:
+                id: txt_st
+                text:'1000'
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+        BoxLayout:
+            orientation:'horizontal'
+            Button:
+                size_hint_y: None
+                height: 40
+                text:'Configurar'
+                on_release:
+                    app.root._scan_time: int(txt_st.text)
+            Button:
+                size_hint_y: None
+                height: 40
+                text:'Fechar'
+                on_release:
+                    root.dismiss()
+
+<DataGraphPopup>:
+    title: 'Gráfico de acompanhamento em tempo real'
+    BoxLayout:
+        orientation:'vertical'
+        TimeSeriesGraph:
+            id: graph
+            xlabel: 'Horário'
+            ylabel: 'Valor'
+            background_color: 0.5,0.5,0.5,0.5
+            x_ticks_minor: 1
+            x_ticks_major: 5
+            y_ticks_major: 25
+            y_grid_label: True
+            x_grid_label: True
+            padding: 5
+            x_grid: True
+            y_grid: True
+            xmin: 0
+            ymin: 0
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: (0.2,0.05)
+            pos_hint: {'bottom':1,'right':1}
+            Button:
+                text:'Fechar'
+                size_hint: (0.2,1)
+                on_release: root.dismiss()
+
+<HistGraphPopup>:
+    title: 'Gráfico de dados históricos'
+    BoxLayout:
+        orientation:'vertical'
+        TimeSeriesGraph:
+            id: graph
+            xlabel: 'Horário'
+            ylabel: 'Valor'
+            background_color: 0.5,0.5,0.5,0.5
+            x_ticks_minor: 1
+            x_ticks_major: 5
+            y_ticks_major: 25
+            y_grid_label: True
+            x_grid_label: True
+            padding: 5
+            x_grid: True
+            y_grid: True
+            xmin: 0
+            ymin: 0
+            ymax: 60000
+        BoxLayout:
+            id: sensores
+            orientation:'horizontal'
+            size_hint: (1,0.1)
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: (1,0.3)
+            Label:
+                text: 'Timestamp inicial'
+                halign: 'center'
+                markup: True
+            TextInput:
+                id: txt_init
+                size_hint: (1,0.4)
+                halign: 'center'
+                valign: 'middle'
+                multiline: False
+            Label:
+                text: 'Timestamp final'
+                halign: 'center'
+                markup: True
+            TextInput:
+                id: txt_final
+                size_hint: (1,0.4)
+                halign: 'center'
+                valign: 'middle'
+                multiline: False
+            Button:
+                text:'Fechar'
+                size_hint: (0.5,0.4)
+                on_release: root.dismiss()
+
+<LabeledCheckBoxHistGraph>:
+    orientation: 'horizontal'
+    size_hint: (0.05,1)
+    CheckBox:
+        id: checkbox
+        on_active: None
+    Label:
+        id: label
+
+<ValvControlPopup>:
+    title: 'Controle das válvulas do sistema'
+    BoxLayout:
+        id: valvulas
+        orientation:'horizontal'
+        size_hint: (1,0.5)
+        BoxLayout:
+            orientation:'vertical'
+            size_hint: (0.2,1)
+            Label:
+                text: 'Válvula 2'
+                halign: 'center'
+                yalign: 'top'
+                markup: True
+        BoxLayout:
+            orientation:'vertical'
+            size_hint: (0.2,1)
+            Label:
+                text: 'Válvula 3'
+                halign: 'center'
+                yalign: 'top'
+                markup: True
+        BoxLayout:
+            orientation:'vertical'
+            size_hint: (0.2,1)
+            Label:
+                text: 'Válvula 4'
+                halign: 'center'
+                yalign: 'top'
+                markup: True
+        BoxLayout:
+            orientation:'vertical'
+            size_hint: (0.2,1)
+            Label:
+                text: 'Válvula 5'
+                halign: 'center'
+                yalign: 'top'
+                markup: True
+        BoxLayout:
+            orientation:'vertical'
+            size_hint: (0.2,1)
+            Label:
+                text: 'Válvula 6'
+                halign: 'center'
+                yalign: 'top'
+                markup: True
+        Button:
+            text:'Fechar'
+            size_hint: (0.2,0.1)
+            on_release: root.dismiss()
+
+<LabeledCheckBoxControl>:
+    orientation: 'horizontal'
+    size_hint: (0.05,1)
+    CheckBox:
+        id: checkbox
+        on_active: None
+    Label:
+        id: label

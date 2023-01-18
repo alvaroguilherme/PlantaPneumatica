@@ -1,0 +1,161 @@
+#:kivy 2.2.0
+
+<MainWidget>:
+    orientation: 'vertical'
+    canvas:
+        Color:
+            rgb: 0.5,0.5,0.5
+        Rectangle:
+            size: self.size
+    BoxLayout:
+        orientation:'horizontal'
+        size_hint: (1,0.1)
+        spacing: 10
+        Label:
+            text: 'SUPERVISÓRIO DA BANCADA PNEUMÁTICA'
+            size_hint_x: None
+            width: 300
+        BoxLayout:
+            orientation:'vertical'
+            size_hint_x: None
+            width: 400
+            Label:
+                text: 'Configurações'
+            BoxLayout:
+                orientation:'horizontal'
+                Button:
+                    text:'Conectar'
+                    on_release:
+                        root._modbusPopup.open()
+                Button:
+                    text:'Scan Time'
+                    on_release:
+                        root._scanPopup.open()
+        Image:
+            id: img_con
+            size_hint_x: None
+            width: 80
+            source: 'imgs/desconectado.png'
+            pos_hint: {'top':1,'right':1}
+    
+    FloatLayout:
+        canvas:
+            Color:
+                rgb: 1,1,1
+            Rectangle:
+                size:self.size
+        Image:
+            source:'imgs/reservatorio_trab.png'
+            size_hint: (1,1)
+            halign: 'top'
+            yalign: 'middle'
+        Image:
+            source:'imgs/motor_desligado.png'
+            size_hint: (0.5,0.5)
+            pos_hint: {'left':1,'x':-0.145}
+        # Image:
+        #     source:'imgs/valvula_desligado.png'
+        #     size_hint: (0.5,0.5)
+        #     pos_hint: {'right':1,'x':0.145}
+        Label:
+            text:'Tempo Real'
+            font_size: 20
+            pos_hint:{'x':-0.37,'y':0.465}
+            color: 0.1,0.7,0.3,1
+            bold: True
+        Button:
+            size_hint: (None,None)
+            size: (0.65*62,0.65*62)
+            background_normal: 'imgs/graph_icon.jpg'
+            background_down: 'imgs/graph_icon.jpg'
+            pos_hint: {'top':1,'left':1}
+            on_release:
+                root._graphPopup.open()
+        Button:
+            text:'Dados históricos'
+            pos_hint: {'left':1,'y':0.85}
+            size_hint: (0.2,0.07)
+            on_release:
+                root._histPopup.open()
+        Button:
+            text:'Controle'
+            pos_hint: {'left':1,'y':0.77}
+            size_hint: (0.2,0.07)
+            on_release:
+                root._controlPopup.open()
+
+        Label:
+            id: rpm
+            text: '0'
+            font_size: 20
+            bold: True
+            halign:'center'
+            pos_hint:{'x':-0.45,'y':0.001}
+            color: 0,0,0,1
+        Label:
+            text: 'RPM'
+            font_size: 20
+            bold: True
+            halign:'center'
+            pos_hint:{'x':-0.35,'y':0.001}
+            color: 0,0,0,1
+        Label:
+            id: torque
+            text: '0'
+            font_size: 20
+            bold: True
+            halign:'center'
+            pos_hint:{'x':-0.45,'y':-0.05}
+            color: 0,0,0,1
+        Label:
+            text: 'Nm'
+            font_size: 20
+            bold: True
+            halign:'center'
+            pos_hint:{'x':-0.35,'y':-0.05}
+            color: 0,0,0,1
+        ArLabel:
+            id: pressao
+            text: '0.00'
+            pos_hint: {'x':-0.1,'y':0.2}
+        ArLabel:
+            text: 'Kgf/cm²'
+            pos_hint: {'x':0,'y':0.2}
+        ArLabel:
+            id: vazao
+            text: '0.00'
+            pos_hint: {'x':0.3,'y':0.45}
+        ArLabel:
+            text: 'm³/s'
+            pos_hint: {'x':0.4,'y':0.45}
+        ValvLabel:
+            id: valv2
+            text: '2'
+            pos_hint: {'x':0.47,'y':0.35}
+        ValvLabel:
+            id: valv3
+            text: '3'
+            pos_hint: {'x':0.47,'y':0.13}
+        ValvLabel:
+            id: valv4
+            text: '4'
+            pos_hint: {'x':0.47,'y':-0.07}
+        ValvLabel:
+            id: valv5
+            text: '5'
+            pos_hint: {'x':0.47,'y':-0.275}
+        ValvLabel:
+            id: valv6
+            text: '6'
+            pos_hint: {'x':0.47,'y':-0.425}
+
+<ArLabel@Label>:
+    bold: True
+    font_size: 25
+    halign: 'center'
+    color: 0,0,0,1
+
+<ValvLabel@Label>:
+    font_size: 20
+    color:1,0,0,1
+    bold: True

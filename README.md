@@ -1,2 +1,2 @@
-# PlantaPneumatica
- SCADA de uma bancada pneumática
+# TrabInfoIndustrial
+ Criação de um software SCADA em Python
